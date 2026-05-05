@@ -1,0 +1,35 @@
+---
+- name: Basic server setup
+  hosts: webservers
+  become: yes
+
+  tasks:
+   - name: Update apt cache
+     apt:
+       update_cache: yes
+       cache_valid_time: 3600
+
+   - name: Install essential packages
+     apt:
+       name:
+         - vim
+         - curl
+         - git 
+         - ufw
+       state: present
+   - name: Allow SSH with limit
+     ufw:
+       rule: allow
+       port: '22'
+       proto: tcp
+
+   - name: Allow HTTP
+     ufw:
+       rule: allow
+       port: '80'
+       proto: tcp
+
+   - name: Enable UFW
+     ufw:
+       state: enabled
+

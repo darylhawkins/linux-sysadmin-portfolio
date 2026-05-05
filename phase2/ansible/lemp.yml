@@ -1,0 +1,49 @@
+---
+- name: Install LEMP stack
+  hosts: webservers
+  become: yes
+  vars_files:
+    - vars.yml
+
+  handlers:
+    - name: Reload nginx
+      service:
+        name: nginx
+        state: reloaded
+
+  tasks:
+    - name: Install LEMP packages
+      apt:
+        name:
+          - nginx
+          - mysql-server
+          - php-fpm
+          - php-mysql
+        state: present
+        update_cache: yes
+
+    - name: Ensure nginx is started and enabled
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: Ensure mysql is started and enabled
+      service:
+        name: mysql
+        state: started
+        enabled: yes
+
+    - name: Create web root
+      file:
+        path: /var/www/phpsite
+        state: directory
+        owner: www-data
+        group: www-data
+        mode: '0755'
+
+    - name: Deploy nginx site config from template
+      template:
+        src: phpsite.conf.j2
+        dest: /etc/nginx/sites-available/phpsite
+      notify: Reload nginx

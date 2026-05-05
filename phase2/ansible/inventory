@@ -1,0 +1,2 @@
+[webservers]
+204.168.186.144 ansible_user=daryl

@@ -1,0 +1,6 @@
+[Unit]
+Description=System health report generator
+
+[Service]
+Type=oneshot
+ExecStart=/home/daryl/projects/vps/scripts/health-report.sh

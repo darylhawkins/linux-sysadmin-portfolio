@@ -1,0 +1,14 @@
+[Unit]
+Description=Nginx service watchdog — monitors and restarts nginx if it crashes
+After=network.target nginx.service
+
+[Service]
+Type=simple
+ExecStart=/home/daryl/projects/vps/scripts/watchdog.sh
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
